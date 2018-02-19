@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.metricaurbana" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>metricaurbana</name>
+    <description>
+        A basic Framework7 template for PhoneGap.
+    </description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access launch-external="yes" origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <icon density="ldpi" height="36" platform="android" src="iconos/iconoMetrica36.png" width="36" />
+    <icon density="mdpi" height="48" platform="android" src="iconos/iconoMetrica48.png" width="48" />
+    <icon density="hdpi" height="72" platform="android" src="iconos/iconoMetrica72.png" width="72" />
+    <icon density="xhdpi" height="96" platform="android" src="iconos/iconoMetrica96.png" width="96" />
+    <preference name="DisallowOverscroll" value="true" />
+</widget>
