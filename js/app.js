@@ -123,6 +123,7 @@ var fx=0;
 myApp.alert('A:'+ultima_actualizacion);
 $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion},function(data){
 //	
+myApp.alert('B:');	
 	var nuevos = data.split("|");
     // 
     //var nueva_actualizacion=0;
