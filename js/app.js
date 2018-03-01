@@ -106,7 +106,7 @@ while(i<1000) {
 
 function cargar_listado_formularios(){
 	//
-var version_actual= '1.021';
+var version_actual= '1.022';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var ultima_actualizacion= JSON.parse(localStorage.getItem('ultima_actualizacion')); 
 	if(ultima_actualizacion===null || ultima_actualizacion===''){
@@ -118,15 +118,15 @@ $$('.usuario_doc').html('<i class="fa fa-user"></i> '+usuario);
 //
 var ref=0;
 var fx=0;
-var ultimo =0;
-var mensaje='';	
-	//myApp.alert(ultima_actualizacion);
+//var ultimo =0;
+//var mensaje='';	
+myApp.alert('A:'+ultima_actualizacion);
 $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion},function(data){
 //	
 	var nuevos = data.split("|");
     // 
-    var nueva_actualizacion=0;
-    var mensaje_resultado='';
+    //var nueva_actualizacion=0;
+    //var mensaje_resultado='';
 	var primero = Number(nuevos[0])-1;
 	//var ultimo = Number(nuevos[1]+2);
 	var ultimo=Number(nuevos[1]);
@@ -137,7 +137,7 @@ $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_a
 	if(fx===0){
 		$$('#lista_formularios_code').val('');
 	}
-		var listado=$$('#lista_formularios_code').val();
+	var listado=$$('#lista_formularios_code').val();
      fx++;
      //ref=fx-primero;
 	ref=fx+1;	
@@ -148,7 +148,7 @@ $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_a
             var formx_numero=formx[0];
             var formx_nombre=formx[1];
             var formx_version=formx[2];
-            var formx_actualizado=formx[3];
+            //var formx_actualizado=formx[3];
             var formx_html=formx[4];
             //
 			localStorage.setItem('formulario'+formx_numero,JSON.stringify('ok~'+formx_numero+'~'+formx_nombre+'~'+formx_version+'~'+formx_html+'~si'));
