@@ -120,28 +120,33 @@ var ref=0;
 var fx=0;
 //var ultimo =0;
 //var mensaje='';	
-myApp.alert('A:'+ultima_actualizacion);
+//myApp.alert('A:'+ultima_actualizacion);
 $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion},function(data){
 //	
-myApp.alert('B:');	
+//myApp.alert('B:');	
+	
 	var nuevos = data.split("|");
     // 
     //var nueva_actualizacion=0;
     //var mensaje_resultado='';
-	var primero = Number(nuevos[0])-1;
+	var primero = Number(nuevos[0]);
 	//var ultimo = Number(nuevos[1]+2);
 	var ultimo=Number(nuevos[1]);
 	myApp.alert(ultima_actualizacion+':'+primero+'-'+ultimo);
 	//myApp.alert(nuevos[0]+'*'+nuevos[1], 'descargando...');
     while(fx<ultimo){
-		
-	if(fx===0){
+	fx++;	
+	if(fx<primero){
 		$$('#lista_formularios_code').val('');
-	}
-	var listado=$$('#lista_formularios_code').val();
-     fx++;
-     //ref=fx-primero;
-	ref=fx+1;	
+		localStorage.removeItem('formulario'+fx);
+	}else{
+
+     
+     ref=(fx-primero)+2;
+		
+		
+	var listado=$$('#lista_formularios_code').val();	
+	//ref=fx+1;	
 		//myApp.alert(ref+': '+nuevos[ref],'formulario '+ref); 
         if(nuevos[ref]!==undefined && nuevos[ref]!=='' && ref>1){
 		
@@ -159,11 +164,9 @@ myApp.alert('B:');
 			$$("#elementsList").html(listado);	
 			myApp.alert(formx_nombre,'formulario descargado: '+formx_numero);	
 			
-        }else{
-			localStorage.removeItem('formulario'+fx);
-		///
-	}
+        }
 	//
+	}
 	}
 	
          });
