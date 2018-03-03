@@ -597,17 +597,19 @@ window.location='index.html';
 
 
 function cargar_encuesta_aeropuerto(posicion){
+var form_aeropuerto=Number(JSON.parse(localStorage.getItem('programacion_aeropuerto_formulario')));
 var pre=$$('#aeropuerto'+posicion).val();
-	bd_load(38);
-	$$('#38_1_1').val(pre);
+	bd_load(form_aeropuerto);
+	$$('#'+form_aeropuerto+'_1_1').val(pre);
 	var planilla=$$('#aeropuerto_planilla'+posicion).val();
 	$$('#planilla').val(planilla);
 }
 
 function cargar_encuesta_terminal(posicion){
+var form_terminal=Number(JSON.parse(localStorage.getItem('programacion_terminal_formulario')));	
 var pre=$$('#terminal'+posicion).val();
-	bd_load(40);
-	$$('#40_1_1').val(pre);
+	bd_load(form_terminal);
+	$$('#'+form_terminal+'_1_1').val(pre);
 	var planilla=$$('#terminal_planilla'+posicion).val();
 	$$('#planilla').val(planilla);
 }
@@ -685,9 +687,12 @@ $$.post('http://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:
 //myApp.alert(data,'resultado completo');
 	var prog = data.split("|");
     // 
-    var registros = Number(prog[0]);
+	var registrosT = prog[0].split("~");
+    var registros = Number(registrosT[0]);
 	myApp.alert('Registros: '+registros,'Programación A');
 	localStorage.setItem('programacion_aeropuerto_items',JSON.stringify(registros));
+	localStorage.setItem('programacion_aeropuerto_formulario',JSON.stringify(registrosT[1]));
+	//myApp.alert(registrosT[1],'formulario aeropuerto');
 	var fx=0;
     while(fx<registros){
 	fx++;
@@ -696,13 +701,15 @@ $$.post('http://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:
 		//bd_listado_programacion('aeropuerto');
 	}
 	
-	
-	
+		
 	//// revisamos la programacion de terminal
 	fx++;
-	var registros2 = Number(prog[fx]);
+	var registros2T = prog[fx].split("~");
+	var registros2 = Number(registros2T[0]);
 	myApp.alert('Registros: '+registros2,'Programación B');
 	localStorage.setItem('programacion_terminal_items',JSON.stringify(registros2));
+	localStorage.setItem('programacion_terminal_formulario',JSON.stringify(registros2T[1]));
+	//myApp.alert(registros2T[1],'formulario terminal');
 	//
 	//localStorage.setItem('programacion_terminal_item',JSON.stringify(registros2));
 	var fx2=0;
