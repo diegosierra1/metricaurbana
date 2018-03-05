@@ -106,7 +106,7 @@ while(i<1000) {
 
 function cargar_listado_formularios(){
 	//
-var version_actual= '1.022';
+var version_actual= '1.023';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var ultima_actualizacion= JSON.parse(localStorage.getItem('ultima_actualizacion')); 
 	if(ultima_actualizacion===null || ultima_actualizacion===''){
@@ -132,7 +132,7 @@ $$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_a
 	var primero = Number(nuevos[0]);
 	//var ultimo = Number(nuevos[1]+2);
 	var ultimo=Number(nuevos[1]);
-	myApp.alert(ultima_actualizacion+':'+primero+'-'+ultimo);
+	//myApp.alert(ultima_actualizacion+':'+primero+'-'+ultimo);
 	//myApp.alert(nuevos[0]+'*'+nuevos[1], 'descargando...');
     while(fx<ultimo){
 	fx++;	
