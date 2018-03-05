@@ -8,7 +8,7 @@
         IndexDream
     </author>
     <content src="index.html" />
-    <access launch-external="yes" origin="http://metricaurbana.com" subdomains="true" />
+    <access launch-external="yes" origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
