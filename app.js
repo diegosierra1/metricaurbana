@@ -136,7 +136,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.37.3';
+var version_actual= '1.2.0';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var ultima_actualizacion= JSON.parse(localStorage.getItem('ultima_actualizacion')); 
 	if(ultima_actualizacion===null || ultima_actualizacion===''){
