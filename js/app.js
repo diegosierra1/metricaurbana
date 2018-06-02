@@ -479,6 +479,11 @@ function bd_guardar_encuesta(){
 			  document.getElementById('p'+formulario+'_'+p).scrollIntoView();
               return;
           }else{
+		
+			  if(valor==='foto'){
+				  /// se guarda la foto como archivo para no llenar la memoria del storage
+				  
+			  }
 		var adicional=$$('#adicional'+formulario+'_'+p).val();
 	
 		if(adicional==='persistente'){
@@ -909,6 +914,7 @@ function pulsar(obj,name,valor,base) {
     //
     function onPhotoDataSuccess(imageData) {
 		var pregunta=$$('#editando_photo_pregunta').val();
+		var formulario=$$('#formulario_cargado').val();
       // Uncomment to view the base64-encoded image data
       // console.log(imageData);
 
@@ -924,7 +930,8 @@ function pulsar(obj,name,valor,base) {
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
-		$$('#datos_imagen'+pregunta).val(imageData);
+		$$('#Photo'+formulario+'_'+pregunta).val(imageData);
+		$$('#'+formulario+'_'+pregunta).val('foto');
     }
 
     // Called when a photo is successfully retrieved
@@ -990,13 +997,13 @@ var conexion=checkConnection();
 	myApp.alert(conexion);
 	if(conexion==='Online'){
 	
-var dataIm=$$('#'+formulario+'_'+pregunta).val();
+var dataIm=$$('#Photo'+formulario+'_'+pregunta).val();
 //var smallImage = document.getElementById('smallImage'+pregunta);
 //var dataIm=$$('#smallImage'+pregunta).getImageData();
 		//alert(dataIm);
-$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm},function(data){
+$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:formulario+'_'+pregunta},function(data){
 	var rx = data.split("|");
-myApp.alert(rx[1],rx[0]);	
+//myApp.alert(rx[1],rx[0]);	
 });
 
 		
