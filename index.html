@@ -91,7 +91,7 @@
                                     <div class = "item-title label">Esta Estación</div>
                                     -->
                                     <div class = "item-input">
-                                       <input type = "number" id="estacion" placeholder = "Numero de Dispositivo">
+                                       <input type = "text" id="estacion" placeholder = "Código único de Dispositivo">
 										<div id="texto_estacion"></div>
                                     </div>
                                  </div>
@@ -106,7 +106,7 @@
                                     <div class = "item-title label">Documento Usuario</div>
                                     -->
                                     <div class = "item-input">
-                                       <input type = "number" id="usuario" placeholder = "c.c. Usuario">
+                                       <input type = "number" id="usuario" placeholder = "Documento Encuestador">
                                     </div>
                                  </div>
                               </div>
@@ -121,7 +121,7 @@
 							   <!--
 							   <button type="button" id="boton_ingresar" class="button color-green" onclick="db_ingresar();">Ingresar*</button>
 							   -->
-							   <input id="submmit-register" type="submit" value="ingresar" class="button button-big button-fill color-green">
+							   <input id="submmit-register" type="button" value="ingresar" onClick="ingreso();" class="button button-big button-fill color-green">
 							   
 							   <a href="#formularios" id="inicio" class="oculto">Ir a formularios</a><br>
 							   
@@ -166,7 +166,7 @@
 <div class="content-block">
 
 	
-	<span class="version"></span> | <span class="usuario_doc"></span>
+	<span class="texto_empresa"></span> | <span class="usuario_doc"></span>
 
 <p>
 						 
@@ -196,23 +196,41 @@
   </p> 
  
  
+ <!--
+	<div>
+		
+<button onclick = "createFile()">CREATE FILE</button>
+<button onclick = "writeFile()">WRITE FILE</button>
+<button onclick = "readFile()">READ FILE</button>
+<button onclick = "removeFile()">DELETE FILE</button><br>
+
+<textarea id = "textarea"></textarea>
+		
+		
+	</div>
+	
+	-->
+	
   <!--
   <div>
   
   <button onclick="capturePhoto();">Capture Photo</button> <br>
   <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
   
-  
+  -->
+   
+   <!--
     <button onclick="editando_photo(10);capturePhotoEdit();">Capture Editable Photo</button> <br>
     <button onclick="editando_photo(10); getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br><br>
     <button onclick="enviar_photo(10);">Enviar</button><br>
-    <img style="display:none; width:120px;height:120px;" id="smallImage10" src="" />
+    <img style="" id="smallImage10" src="" class="preview_foto" />
     <img style="display:none; width:120px;height:120px;" id="largeImage10" src="" />
     </div>
-    <input type="text" id="editando_photo_pregunta" value="">
-    <textarea id="datos_imagen10"></textarea>
+    <input type="text" id="_10" value="">
     
+    <textarea id="Photo_10"></textarea>
     -->
+    
   
   
   </div>
@@ -254,8 +272,96 @@
                      <br><br>
                         
                      <input id="submit-encuesta" type="submit" value="Guardar Encuesta" class="button button-big button-fill color-green">
-                     <input type="text" id="editando_photo_pregunta" value="">
+                     <input type="hidden" id="editando_photo_pregunta" value="">
                      <input type="hidden" id="planilla" value="">
+                     
+                     
+                     <!--  -->
+                     <input type="hidden" id="Photo1" > 
+                     <input type="hidden" id="Photo2" >
+                     <input type="hidden" id="Photo3" >
+                     <input type="hidden" id="Photo4" >
+                     <input type="hidden" id="Photo5" >
+                     <input type="hidden" id="Photo6" > 
+                     <input type="hidden" id="Photo7" >
+                     <input type="hidden" id="Photo8" >
+                     <input type="hidden" id="Photo9" >
+                     <input type="hidden" id="Photo10" >
+                     <input type="hidden" id="Photo11" > 
+                     <input type="hidden" id="Photo12" >
+                     <input type="hidden" id="Photo13" >
+                     <input type="hidden" id="Photo14" >
+                     <input type="hidden" id="Photo15" >
+                     <input type="hidden" id="Photo16" > 
+                     <input type="hidden" id="Photo17" >
+                     <input type="hidden" id="Photo18" >
+                     <input type="hidden" id="Photo19" >
+                     <input type="hidden" id="Photo20" >
+                     <input type="hidden" id="Photo21" > 
+                     <input type="hidden" id="Photo22" >
+                     <input type="hidden" id="Photo23" >
+                     <input type="hidden" id="Photo24" >
+                     <input type="hidden" id="Photo25" >
+                     <input type="hidden" id="Photo26" > 
+                     <input type="hidden" id="Photo27" >
+                     <input type="hidden" id="Photo28" >
+                     <input type="hidden" id="Photo29" >
+                     <input type="hidden" id="Photo30" >
+                     <input type="hidden" id="Photo31" > 
+                     <input type="hidden" id="Photo32" >
+                     <input type="hidden" id="Photo33" >
+                     <input type="hidden" id="Photo34" >
+                     <input type="hidden" id="Photo35" >
+                     <input type="hidden" id="Photo36" > 
+                     <input type="hidden" id="Photo37" >
+                     <input type="hidden" id="Photo38" >
+                     <input type="hidden" id="Photo39" >
+                     <input type="hidden" id="Photo40" >
+                     <input type="hidden" id="Photo41" > 
+                     <input type="hidden" id="Photo42" >
+                     <input type="hidden" id="Photo43" >
+                     <input type="hidden" id="Photo44" >
+                     <input type="hidden" id="Photo45" >
+                     <input type="hidden" id="Photo46" > 
+                     <input type="hidden" id="Photo47" >
+                     <input type="hidden" id="Photo48" >
+                     <input type="hidden" id="Photo49" >
+                     <input type="hidden" id="Photo50" >
+                     <input type="hidden" id="Photo51" > 
+                     <input type="hidden" id="Photo52" >
+                     <input type="hidden" id="Photo53" >
+                     <input type="hidden" id="Photo54" >
+                     <input type="hidden" id="Photo55" >
+                     <input type="hidden" id="Photo56" > 
+                     <input type="hidden" id="Photo57" >
+                     <input type="hidden" id="Photo58" >
+                     <input type="hidden" id="Photo59" >
+                     <input type="hidden" id="Photo60" >
+                     <input type="hidden" id="Photo61" > 
+                     <input type="hidden" id="Photo62" >
+                     <input type="hidden" id="Photo63" >
+                     <input type="hidden" id="Photo64" >
+                     <input type="hidden" id="Photo65" >
+                     <input type="hidden" id="Photo66" > 
+                     <input type="hidden" id="Photo67" >
+                     <input type="hidden" id="Photo68" >
+                     <input type="hidden" id="Photo69" >
+                     <input type="hidden" id="Photo70" >
+                     <input type="hidden" id="Photo71" > 
+                     <input type="hidden" id="Photo72" >
+                     <input type="hidden" id="Photo73" >
+                     <input type="hidden" id="Photo74" >
+                     <input type="hidden" id="Photo75" >
+                     <input type="hidden" id="Photo76" > 
+                     <input type="hidden" id="Photo77" >
+                     <input type="hidden" id="Photo78" >
+                     <input type="hidden" id="Photo79" >
+                     <input type="hidden" id="Photo80" >
+                     
+                     
+                     
+                     <!--  -->
+                     
 </div>
 </div>
 

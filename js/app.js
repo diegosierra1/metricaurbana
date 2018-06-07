@@ -47,16 +47,17 @@ function bd_iniciar_inicio(){
 //myApp.alert('ok');	
 var estacion_id = JSON.parse(localStorage.getItem('estacion_id'));
 var usuario= JSON.parse(localStorage.getItem('usuario'));
-//
-    if(estacion_id!==null && estacion_id!==''){
-$$('#estacion').val(estacion_id);
-$$('#estacion').hide();
-$$('#texto_estacion').html('Estación N. '+estacion_id); 	
-    }
-    //
-    if(estacion_id!==null && usuario!==null ){
-	$$('#usuario').val(usuario);
+var empresa = JSON.parse(localStorage.getItem('empresa'));
+var empresa_id = JSON.parse(localStorage.getItem('empresa_id'));	
+var sesion = JSON.parse(localStorage.getItem('sesion'));	
+	
 
+    //
+   if(sesion==='on'){
+	 $$('#estacion').val(estacion_id);  
+	$$('#usuario').val(usuario);
+$$('#texto_estacion').html('Estación N. '+estacion_id);
+$$('.texto_empresa').html(empresa);	   
 	$$('#boton-2').click();
 		//
 	//setTimeout(cargar_listado_formularios(), 3000);
@@ -65,7 +66,10 @@ $$('#texto_estacion').html('Estación N. '+estacion_id);
 		//
 $$('.panel').css({'visibility':'visible'});
 $$('.tabbar-labels').show();
+ myApp.showTab('#view-2');
     }else{
+$$('#estacion').val(estacion_id); 
+$$('#texto_estacion').hide(); 
 $$('.panel').css({'visibility':'hidden'});		
 $$('.tabbar-labels').hide();		
 	}
@@ -77,26 +81,71 @@ $$('.tabbar-labels').hide();
 
 
 
-$$('#submmit-register').on('click', function () {
+function ingreso() {
 var usuario=$$('#usuario').val();
-    var estacion=$$('#estacion').val();
+var estacion=$$('#estacion').val();
 	 //myApp.alert(usuario+'/'+estacion); 
     if(usuario==='' || estacion===''){
      myApp.alert('datos incompletos','error'); 
-	
+	/*
 		if(estacion===''){
 	$$('#estacion').show();
 	$$('#texto_estacion').hide(); 
 		}
+		*/
 		return;
     }else{
-     localStorage.setItem('estacion_id',JSON.stringify(estacion));
-     localStorage.setItem('usuario',JSON.stringify(usuario));
-	//
-		window.location='index.html';
+	//myApp.alert('ingresando');
+	var conexion=checkConnection();
+	//myApp.alert(conexion);
+	//if(navigator.onLine){
+	if(conexion==='Online'){
+	$$.post('http://metricaurbana.com/conecta.php',{ingreso:'si',estacion:estacion},function(data){
+//	
+	var respuesta = data.split("|");
+	//myApp.alert('data:'+data); 	
+	if(respuesta[0]==='OK'){		
+  localStorage.setItem('usuario',JSON.stringify(usuario));
+    localStorage.setItem('estacion_id',JSON.stringify(estacion));
+	localStorage.setItem('empresa',JSON.stringify(respuesta[1]));
+	localStorage.setItem('empresa_id',JSON.stringify(respuesta[2]));	
+	
+	localStorage.setItem('sesion',JSON.stringify('on'));
+		//
+		bd_iniciar_inicio();
+		/// si hay una nueva version se da aviso
+
+	}else{
+		myApp.alert(respuesta[1],respuesta[0]); 
+	}
+		});
+		
+		}else{
+		//myApp.alert('Sin Internet');	
+			// conexion off
+var estacion_id = JSON.parse(localStorage.getItem('estacion_id'));
+
+			//
+			estacion_id =estacion_id.replace(" ", "");
+		
+		//// si estan vacias se indica que se necesita conexion a internet
+		if(estacion_id===null || estacion_id===null){
+		myApp.alert('Por favor revise su conexión a internet', 'problema');	
+		}else if(estacion_id!==estacion){
+		myApp.alert('Error en el codigo de estación, por favor verifique su conexión a internet e intentelo de nuevo','error');		
+		}else if(estacion_id===estacion){
+		localStorage.setItem('sesion',JSON.stringify('on'));
+		//
+			bd_iniciar_inicio();
+			
+		}
+			//myApp.alert('504'); 
+		}
+		
+		
     }  
     
-});
+}
 
 
 
@@ -138,6 +187,8 @@ function cargar_listado_formularios(){
 	
 var version_actual= '1.2.0';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
+var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
+	//myApp.alert(empresa_id);
 var ultima_actualizacion= JSON.parse(localStorage.getItem('ultima_actualizacion')); 
 	if(ultima_actualizacion===null || ultima_actualizacion===''){
 	ultima_actualizacion=10;	
@@ -166,7 +217,7 @@ var mensaje='';
 	if(conexion==='Online'){
 	$$('#lista_formularios_code').val('');
 		
-$$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion},function(data){
+$$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion,empresa_id:empresa_id},function(data){
 //	
 	var nuevos = data.split("|");
     // 
@@ -410,6 +461,7 @@ outerHTML = outerHTML+'<tr valign="top"><td><b>' + i + '</b></td><td>' + datos[2
 }
 	
 	if(outerHTML==='' || b===1){
+	//if(outerHTML===''){	
 		outerHTML=outerHTML+'<tr><td colspan="6">No hay encuestas pendientes por sincronizar<br> <span style="color:red" onclick="borrar_todo();" >Borrar todos los datos guardados en memoria?</span> <input type="text" id="codigo_borrado" style="width:60px;"></td></tr>';
 	}
 //
@@ -482,8 +534,11 @@ function bd_guardar_encuesta(){
 		
 			  if(valor==='foto'){
 				  /// se guarda la foto como archivo para no llenar la memoria del storage
-				  
+				  //myApp.alert('FFF'+p);
+				  writeFile(formulario+'_'+p,encuesta_id,p);
+				  localStorage.setItem('Foto'+encuesta_id+'_'+p,JSON.stringify(now+'|'+encuesta_id+'-'+formulario+'_'+p));
 			  }
+			  /////
 		var adicional=$$('#adicional'+formulario+'_'+p).val();
 	
 		if(adicional==='persistente'){
@@ -499,6 +554,8 @@ function bd_guardar_encuesta(){
 			  if(valor===undefined){
 				  vmostrar='';
 			  }
+			  
+			  
 			  /*
 			  if(valor==='' || valor===undefined){
 				  vmostrar=valorB;
@@ -513,7 +570,6 @@ function bd_guardar_encuesta(){
         while(s<60){
             s++;
             var svalor=$$('input[name="'+formulario+'_'+p+'_'+r+'_'+s+'"] ').val(); /// no cambiar este metodo sin probarlo antes
-			//
          //myApp.alert(formulario+'_'+p+'_'+r+': '+svalor);
          if(svalor!==undefined){
              respuestas=respuestas+'S'+formulario+'_'+p+'_'+r+'_'+s+'|'+svalor+'~';
@@ -588,7 +644,10 @@ function ir_encuestas(){
 
 function sincronizar(){
 //
+	
+	
 	var conexion=checkConnection();
+	//alert(conexion);
 	if(conexion==='Online'){
 	//if(navigator.onLine){
 var limite=JSON.parse(localStorage.getItem('encuesta_id'));
@@ -629,6 +688,26 @@ proceso=proceso+'-'+i;
     var rp=JSON.parse(localStorage.getItem('respuestas'+i));
 	var consecutivo=i;
    //var respuestaS ='';
+if(en!==null && en!=='') {	
+	/// se revisa para enviar las fotos si las hay
+		var f=0;
+		while(f<50){
+			f++;
+			var ft=JSON.parse(localStorage.getItem('Foto'+i+'_'+f));
+			if(ft!==null && ft!==''){
+				var rft = ft.split("|");
+			//enviar_photo(ft);
+				//alert(rft[1]);
+			//enviar_photo(ft,rft[1],f);
+				//readFile(nombre,ref,pregunta)
+				readFile(rft[1],ft,f);
+			}
+			/// vemos si la foto existe y no esta en ''
+		}	
+	//return; 
+}
+
+	
 	
     if(en!==null && en!=='') {
 		enviados++;
@@ -665,6 +744,10 @@ $$('#ya_enviado').html(tx_enviado);
     //reporte_encuestas(); 
          });
         ///
+		
+	
+		
+		
                     }
 	/*
 	if(enviados===300){/// limite de encuestas enviadas por cada vez
@@ -705,7 +788,7 @@ $$('#ya_enviado').html(tx_enviado);
 function salir(){
 myApp.confirm('Desea Salir?', 'cerrar sesión', function () {
 //JSON.parse(localStorage.removeItem('usuario'));
-localStorage.removeItem('usuario');
+localStorage.removeItem('sesion');
 window.location='index.html';
 });
 }
@@ -714,7 +797,7 @@ window.location='index.html';
 function borrar_todo(){
 myApp.confirm('Desea Borra todos los datos locales?', 'Borrar y Salir', function () {
 	var code=$$('#codigo_borrado').val();
-	if(code!=='2846'){
+	if(code!=='8469'){
 		myApp.alert('Error en el codigo de borrado','error');
 	}else{
 	localStorage.clear();
@@ -884,11 +967,11 @@ bd_listado_programacion('terminal');
 
 
 function pulsar(obj,name,valor,base) {
-    if (!obj.checked) return
+    if (!obj.checked) return;
 	$$('#'+base+'_1').val(valor);
     elem=document.getElementsByName(name);
     for(i=0;i<elem.length;i++) 
-        elem[i].checked=false;
+    elem[i].checked=false;
     obj.checked=true;
 } 
 
@@ -930,8 +1013,10 @@ function pulsar(obj,name,valor,base) {
       // The inline CSS rules are used to resize the image
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
-		$$('#Photo'+formulario+'_'+pregunta).val(imageData);
-		$$('#'+formulario+'_'+pregunta).val('foto');
+		$$('#Photo'+pregunta).val(imageData);
+		$$('#'+formulario+'_'+pregunta+'_1').val('foto');
+		//alert('#Photo'+pregunta);
+		
     }
 
     // Called when a photo is successfully retrieved
@@ -991,17 +1076,20 @@ function editando_photo(pregunta){
 	$$('#editando_photo_pregunta').val(pregunta);
 }
 
-function enviar_photo(pregunta){
+
+
+function enviar_photo(ref,nombre,pregunta){
 	var formulario=$$('#formulario_cargado').val();
 var conexion=checkConnection();
 	myApp.alert(conexion);
 	if(conexion==='Online'){
 	
-var dataIm=$$('#Photo'+formulario+'_'+pregunta).val();
+//***var dataIm=$$('#Photo'+formulario+'_'+pregunta).val();
+var dataIm=readFile(nombre);		
 //var smallImage = document.getElementById('smallImage'+pregunta);
 //var dataIm=$$('#smallImage'+pregunta).getImageData();
-		//alert(dataIm);
-$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:formulario+'_'+pregunta},function(data){
+//alert('datos:'+dataIm);
+$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta},function(data){
 	var rx = data.split("|");
 //myApp.alert(rx[1],rx[0]);	
 });
@@ -1015,3 +1103,126 @@ $$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:for
 
 
 //////*********
+
+
+function createFile() {
+   //var type = window.TEMPORARY;
+	var type = window.PERSISTENT;
+   //var size = 5*1024*1024;
+var size = 0;
+   window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+      fs.root.getFile('prueba_metrica.jpg', {create: true, exclusive: true}, function(fileEntry) {
+         alert('File creation successfull!');
+      }, errorCallback);
+   }
+
+   function errorCallback(error) {
+      alert("ERROR: " + error.code)
+   }
+	
+}
+
+
+function writeFile(nombre,encuesta,pregunta) {
+   //var type = window.TEMPORARY;
+var type = window.PERSISTENT;
+   //var size = 5*1024*1024;
+var size = 0;
+   window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+      fs.root.getFile('Photo'+encuesta+'-'+nombre+'.jpg', {create: true}, function(fileEntry) {
+
+         fileEntry.createWriter(function(fileWriter) {
+            fileWriter.onwriteend = function(e) {
+              // alert('Write completed: Photo'+encuesta+'-'+nombre);
+            };
+
+            fileWriter.onerror = function(e) {
+               //alert('Write failed: ' + e.toString());
+            };
+
+			 //var contenido_imagen=$$('#Photo'+formulario+'_'+pregunta).val();
+			 var contenido_imagen=$$('#Photo'+pregunta).val();
+			 //alert('Contenido Imagen #Photo'+nombre+'_1:'+contenido_imagen);
+            //var blob = new Blob(['HOla Hola'], {type: 'text/plain'});
+			 var blob = new Blob([contenido_imagen], {type: 'image/jpeg'});
+            fileWriter.write(blob);
+			 $$('#Photo'+pregunta).val('');///limpiamos el campo
+			 
+         }, errorCallback);
+      }, errorCallback);
+   }
+
+   function errorCallback(error) {
+      //alert("ERROR: " + error.code)
+   }
+}
+
+
+
+function readFile(nombre,ref,pregunta) {
+   //var type = window.TEMPORARY;
+var type = window.PERSISTENT;
+   //var size = 5*1024*1024;
+var size = 0;
+//**alert('Leyendo: Photo'+nombre+'.jpg');
+	
+window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+      fs.root.getFile('Photo'+nombre+'.jpg', {}, function(fileEntry) {
+
+         fileEntry.file(function(file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function(e) {
+               //**var txtArea = document.getElementById('textarea');
+               //**txtArea.value = this.result;
+				
+				
+				//****
+					var dataIm=this.result;		
+//var smallImage = document.getElementById('smallImage'+pregunta);
+//var dataIm=$$('#smallImage'+pregunta).getImageData();
+//alert('datos:'+dataIm);
+$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta},function(data){
+	var rx = data.split("|");
+//myApp.alert(rx[1],rx[0]);	
+	removeFile('Photo'+nombre+'.jpg');
+});
+				//****
+            };
+            reader.readAsText(file);
+         }, errorCallback);
+      }, errorCallback);
+   }
+
+   function errorCallback(error) {
+      //alert("ERROR: " + error.code)
+   }
+}	
+
+
+function removeFile(archivo) {
+   //var type = window.TEMPORARY;
+var type = window.PERSISTENT;
+   //var size = 5*1024*1024;
+var size = 0;
+   window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+      fs.root.getFile(archivo, {create: false}, function(fileEntry) {
+
+         fileEntry.remove(function() {
+           //alert('File removed.');
+         }, errorCallback);
+      }, errorCallback);
+   }
+
+   function errorCallback(error) {
+      //alert("ERROR: " + error.code)
+   }
+}	
