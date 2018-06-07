@@ -460,9 +460,9 @@ outerHTML = outerHTML+'<tr valign="top"><td><b>' + i + '</b></td><td>' + datos[2
     //
 }
 	
-	if(outerHTML==='' || b===1){
-	//if(outerHTML===''){	
-		outerHTML=outerHTML+'<tr><td colspan="6">No hay encuestas pendientes por sincronizar<br> <span style="color:red" onclick="borrar_todo();" >Borrar todos los datos guardados en memoria?</span> <input type="text" id="codigo_borrado" style="width:60px;"></td></tr>';
+	//if(outerHTML==='' || b===1){
+	if(outerHTML===''){	
+		outerHTML=outerHTML+'<tr><td colspan="6">No hay encuestas pendientes por sincronizar<br> <span style="color:red" onclick="borrar_todo();" >Liberar espacio de la memoria interna, borrando todos los datos guardados?</span> <input type="hidden" id="codigo_borrado" style="width:60px;" value="8469"></td></tr>';
 	}
 //
 $$("#elementsList_encuestas").html(outerHTML);
