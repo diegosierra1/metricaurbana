@@ -499,6 +499,7 @@ function bd_guardar_encuesta(){
   var estacion=JSON.parse(localStorage.getItem('estacion_id'));
   var usuario=JSON.parse(localStorage.getItem('usuario'));
   var formulario=$$('#formulario_cargado').val();
+  var campos_obligatorios=$$('#campos_obligatorios').val();
    //// identificador
   var encuesta_id=$$('#encuesta_id').val(); 
   var now=new Date().getTime();
@@ -525,7 +526,7 @@ function bd_guardar_encuesta(){
          if(valor!==undefined || valorB!==undefined){      
          //if(valor!==undefined){
            //if(valor==='' && p!==10 && r===1){  
-          if(valor==='' && r===1){
+          if(valor==='' && r===1 && campos_obligatorios!=='no'){
               myApp.alert('falta completar la pregunta '+p,'error');
 			  //
 			  document.getElementById('p'+formulario+'_'+p).scrollIntoView();
