@@ -185,7 +185,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.2.1';
+var version_actual= '1.2.2';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
@@ -508,7 +508,7 @@ function bd_guardar_encuesta(){
     var respuestas='';
     var p=0;
     var total_preguntas=0;
-    while(p<50){
+    while(p<80){
         p++;
     //
 	var pvalor=$$('#pregunta'+formulario+'_'+p).val();
@@ -600,7 +600,7 @@ function bd_guardar_encuesta(){
      // fin de Respuestas
     }else{
       total_preguntas=p-1;
-        p=50;    
+        p=80;    
      }
     }
      /// fin preguntas
