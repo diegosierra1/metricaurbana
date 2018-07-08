@@ -42,6 +42,23 @@ function checkConnection() {
 }
 
 
+function crear_campos_fotos(){
+	var cf='';
+var i=0;
+	while(i<80){
+		i++;
+		var f=0;
+		while(f<5){
+			f++;
+		cf=cf+'<input type="hidden" id="Photo'+i+'_'+f+'" >';	
+		}
+	}
+	///
+	$$('#zona_campos_fotos').html(cf);
+}
+
+
+
 
 function bd_iniciar_inicio(){
 //myApp.alert('ok');	
@@ -63,6 +80,7 @@ $$('.texto_empresa').html(empresa);
 	//setTimeout(cargar_listado_formularios(), 3000);
 	cargar_listado_formularios();	
 	reporte_encuestas();
+	crear_campos_fotos();
 		//
 $$('.panel').css({'visibility':'visible'});
 $$('.tabbar-labels').show();
@@ -185,7 +203,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.2.2';
+var version_actual= '1.2.3';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
@@ -523,6 +541,9 @@ function bd_guardar_encuesta(){
             r++;
             var valor=$$('#'+formulario+'_'+p+'_'+r).val();
 			var valorB=$$('#R'+formulario+'_'+p+'_'+r).val();
+			var foto_name=formulario+'_'+p+'_'+r;
+			var foto_nameB=encuesta_id+'_'+p+'_'+r;
+			var ii=r;
          if(valor!==undefined || valorB!==undefined){      
          //if(valor!==undefined){
            //if(valor==='' && p!==10 && r===1){  
@@ -536,8 +557,8 @@ function bd_guardar_encuesta(){
 			  if(valor==='foto'){
 				  /// se guarda la foto como archivo para no llenar la memoria del storage
 				  //myApp.alert('FFF'+p);
-				  writeFile(formulario+'_'+p,encuesta_id,p);
-				  localStorage.setItem('Foto'+encuesta_id+'_'+p,JSON.stringify(now+'|'+encuesta_id+'-'+formulario+'_'+p));
+				  writeFile(foto_name,encuesta_id,p,ii);
+				  localStorage.setItem('Foto'+foto_nameB,JSON.stringify(now+'|'+encuesta_id+'-'+formulario+'_'+p+'_'+ii));
 			  }
 			  /////
 		var adicional=$$('#adicional'+formulario+'_'+p).val();
@@ -607,6 +628,7 @@ function bd_guardar_encuesta(){
     
   //myApp.alert('<textarea>total de preguntas: '+total_preguntas+' > '+respuestas+'</textarea>'); 
     /// registramos 
+	if(p===80){
 var planilla=$$('#planilla').val();
 localStorage.setItem('encuesta'+encuesta_id, JSON.stringify(estacion+'~'+usuario+'~'+formulario+'~'+now+'~'+planilla));
     
@@ -619,12 +641,14 @@ localStorage.setItem('respuestas'+encuesta_id,JSON.stringify(respuestas));
     //localStorage['encuesta_id']=
   
     // cargamos un nuevo formulario
-  bd_load(formulario);
-    myApp.alert('Se ha cargado uno nuevo', 'formulario guardado');
+  //,bd_load(formulario)
+    myApp.alert('Se ha cargado uno nuevo', 'formulario guardado',bd_load(formulario));
 	//$$('#'+formulario+'_1_1').focus(); /* revisar*/
 	document.getElementById('p'+formulario+'_1').scrollIntoView();
 	reporte_encuestas();
 	campos_persistentes();
+}
+	
  }
 
 
@@ -678,7 +702,8 @@ var enviados=0;
 var tx_enviado=JSON.parse(localStorage.getItem('enviado'));
 if(tx_enviado===null){
 tx_enviado='';	
-}		
+}
+	
 //while(i<limite) {
    // i++;
 		//var x=0;
@@ -692,18 +717,22 @@ proceso=proceso+'-'+i;
 if(en!==null && en!=='') {	
 	/// se revisa para enviar las fotos si las hay
 		var f=0;
-		while(f<50){
+		while(f<80){
 			f++;
-			var ft=JSON.parse(localStorage.getItem('Foto'+i+'_'+f));
+		sf=0;	
+		while(sf<5){
+			sf++;
+			var ft=JSON.parse(localStorage.getItem('Foto'+i+'_'+f+'_'+sf));
 			if(ft!==null && ft!==''){
 				var rft = ft.split("|");
 			//enviar_photo(ft);
 				//alert(rft[1]);
 			//enviar_photo(ft,rft[1],f);
 				//readFile(nombre,ref,pregunta)
-				readFile(rft[1],ft,f);
+				readFile(rft[1],ft,f,sf);
 			}
 			/// vemos si la foto existe y no esta en ''
+		}
 		}	
 	//return; 
 }
@@ -1015,7 +1044,8 @@ function pulsar(obj,name,valor,base) {
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
 		$$('#Photo'+pregunta).val(imageData);
-		$$('#'+formulario+'_'+pregunta+'_1').val('foto');
+		
+		$$('#'+formulario+'_'+pregunta).val('foto');
 		//alert('#Photo'+pregunta);
 		
     }
@@ -1103,6 +1133,9 @@ $$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref
 }
 
 
+
+
+
 //////*********
 
 
@@ -1126,7 +1159,11 @@ var size = 0;
 }
 
 
-function writeFile(nombre,encuesta,pregunta) {
+function writeFile(nombre,encuesta,pregunta,posicion) {
+	//myApp.alert('preg:'+pregunta);
+	/// buscamos hasta 5 fotos
+//alert('Creando: Photo'+encuesta+'-'+nombre+'.jpg');
+//alert('#Photo'+pregunta+'_'+posicion);	
    //var type = window.TEMPORARY;
 var type = window.PERSISTENT;
    //var size = 5*1024*1024;
@@ -1138,21 +1175,22 @@ var size = 0;
 
          fileEntry.createWriter(function(fileWriter) {
             fileWriter.onwriteend = function(e) {
-              // alert('Write completed: Photo'+encuesta+'-'+nombre);
+              //alert('Write completed: Photo'+encuesta+'-'+nombre+'.jpg');
             };
 
             fileWriter.onerror = function(e) {
-               //alert('Write failed: ' + e.toString());
+              // alert('Write failed: ' + e.toString());
             };
 
+			 //alert('Escribiendo: '+pregunta+'_'+posicion);
 			 //var contenido_imagen=$$('#Photo'+formulario+'_'+pregunta).val();
-			 var contenido_imagen=$$('#Photo'+pregunta).val();
-			 //alert('Contenido Imagen #Photo'+nombre+'_1:'+contenido_imagen);
+			 var contenido_imagen=$$('#Photo'+pregunta+'_'+posicion).val();
+			//alert('Contenido Imagen #Photo'+pregunta+'_'+posicion+':'+contenido_imagen);
             //var blob = new Blob(['HOla Hola'], {type: 'text/plain'});
+			 
 			 var blob = new Blob([contenido_imagen], {type: 'image/jpeg'});
             fileWriter.write(blob);
-			 $$('#Photo'+pregunta).val('');///limpiamos el campo
-			 
+			$$('#Photo'+pregunta+'_'+posicion).val('');///limpiamos el campo 
          }, errorCallback);
       }, errorCallback);
    }
@@ -1160,16 +1198,19 @@ var size = 0;
    function errorCallback(error) {
       //alert("ERROR: " + error.code)
    }
+		//
+
 }
 
 
 
-function readFile(nombre,ref,pregunta) {
+function readFile(nombre,ref,pregunta,posicion) {
+
    //var type = window.TEMPORARY;
 var type = window.PERSISTENT;
    //var size = 5*1024*1024;
 var size = 0;
-//**alert('Leyendo: Photo'+nombre+'.jpg');
+//alert('Leyendo: Photo'+nombre+'.jpg /R:'+ref+'/P:'+pregunta+'/Po:'+posicion);
 	
 window.requestFileSystem(type, size, successCallback, errorCallback)
 
@@ -1188,15 +1229,23 @@ window.requestFileSystem(type, size, successCallback, errorCallback)
 					var dataIm=this.result;		
 //var smallImage = document.getElementById('smallImage'+pregunta);
 //var dataIm=$$('#smallImage'+pregunta).getImageData();
-//alert('datos:'+dataIm);
-$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta},function(data){
+//alert(pregunta+'_'+posicion+' datos:'+dataIm);
+				
+			
+//myApp.alert('enviando:'+name+' > '+pregunta);
+$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta,posicion:posicion},function(data){
 	var rx = data.split("|");
 //myApp.alert(rx[1],rx[0]);	
 	removeFile('Photo'+nombre+'.jpg');
 });
+				
 				//****
             };
+			 
+			 
             reader.readAsText(file);
+			 
+			 
          }, errorCallback);
       }, errorCallback);
    }
@@ -1204,6 +1253,8 @@ $$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref
    function errorCallback(error) {
       //alert("ERROR: " + error.code)
    }
+		//
+	
 }	
 
 
