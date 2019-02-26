@@ -867,9 +867,9 @@ var i=0;
 var resultado_aeropuerto='';	
 var limiteA=Number(JSON.parse(localStorage.getItem('programacion_aeropuerto_items')));
 	if(limiteA>0){
-	resultado_aeropuerto='<tr><td colspan="10">Aeropuerto:</td></tr><tr> <th>&nbsp;</th><th>Fecha</th> <th>Estrato</th> <th>Planilla</th> <th>Lugar</th> <th>Aerolinea</th> <th>Vuelo</th> <th>Pais Destino</th> <th>Ciudad Destino</th> <th>Hora Captura</th> <th>Hora Salida</th></tr>';	
+	resultado_aeropuerto='<tr><td colspan="10">Programación A:</td></tr><tr> <th>&nbsp;</th><th>Fecha</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>Lugar</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>Hora Captura</th> <th>Hora Salida</th></tr>';	
 	}else{
-	resultado_aeropuerto=' <b>Sin Programación para Aeropuerto</b>';	
+	resultado_aeropuerto=' <b>Sin Programación A</b>';	
 	}
 	//
 	
@@ -896,9 +896,9 @@ while(i<limiteA) {
 	//limiteT=10;
 	var resultado_terminal='';
 	if(limiteT>0){
-	resultado_terminal='<tr><td colspan="10">Terminal:</td></tr><tr> <th>&nbsp;</th><th>Fecha</th><th>Planilla</th> <th>Modulo</th> <th>Empresa</th> <th>Destino</th> <th>Hora Aplicación</th></tr>';	
+	resultado_terminal='<tr><td colspan="10">Programación B:</td></tr><tr> <th>&nbsp;</th><th>Fecha</th><th>&nbsp;</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>&nbsp;</th> <th>Hora</th></tr>';	
 	}else{
-	resultado_terminal='<b>Sin programación para Terminal</b>';	
+	resultado_terminal='<b>Sin programación B</b>';	
 	}
 //myApp.alert(limiteT,'limite T');
 while(x<limiteT) {
@@ -939,7 +939,7 @@ $$.post('http://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:
     // 
 	var registrosT = prog[0].split("~");
     var registros = Number(registrosT[0]);
-	myApp.alert('Encuestas Aeropuerto: '+registros,'Programación');
+	myApp.alert(registros+' Registros','Programación A');
 	localStorage.setItem('programacion_aeropuerto_items',JSON.stringify(registros));
 	localStorage.setItem('programacion_aeropuerto_formulario',JSON.stringify(registrosT[1]));
 	//myApp.alert(registrosT[1],'formulario aeropuerto');
@@ -957,7 +957,7 @@ $$.post('http://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:
 	fx++;
 	var registros2T = prog[fx].split("~");
 	var registros2 = Number(registros2T[0]);
-	myApp.alert('Encuestas Terminal: '+registros2,'Programación');
+	myApp.alert(registros2+' Registros','Programación B');
 	localStorage.setItem('programacion_terminal_items',JSON.stringify(registros2));
 	localStorage.setItem('programacion_terminal_formulario',JSON.stringify(registros2T[1]));
 	//myApp.alert(registros2T[1],'formulario terminal');
@@ -989,7 +989,8 @@ bd_listado_programacion('terminal');
 	bd_listado_programacion('terminal');
 	myApp.alert('Por favor revise su conexión a internet','error en conexión');
 }
-		
+
+myApp.showTab('#view-6');	
 }
 
 
