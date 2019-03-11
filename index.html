@@ -31,19 +31,21 @@
 		<!--
      <p><a href="#programacion" id="boton_programacion"  class="tab-link close-panel"><h4><i class="fa fa-thumbs-o-up"></i> Mi Programación</h4></a></p>
      -->
-      <p><a href="" id="boton-7" class="tab-link close-panel" onClick="cargar_listado_formularios();"><h4><i class="fa fa-download"></i> Descargar Formularios</h4></a></p>
+      <p><a href="" id="boton-7" class="tab-link close-panel" onclick="cargar_listado_formularios();"><h4><i class="fa fa-download"></i> Descargar Formularios</h4></a></p>
 							<p><a href="#view-2" id="boton-2" class="tab-link close-panel"><h4><i class="fa fa-list"></i> Formularios</h4></a></p>
                                                       
 							<p><a href="#view-4" id="boton-4"  class="tab-link close-panel"><h4><i class="fa fa-archive"></i> Encuestas Realizadas</h4></a></p>
-                           <p><a href="" id="boton-8"  class="tab-link close-panel" onClick="cargar_listado_programacion();"><h4><i class="fa fa-download"></i> Descargar Programación</h4></a></p>
+                           <p><a href="" id="boton-10"  class="tab-link close-panel" onclick="cargar_mi_contenido();"><h4><i class="fa fa-download"></i> Mi Contenido</h4></a></p>
+                           <div id="zona_personalizada_boton"></div>
                            <!--
                             <p><a href="#view-6" id="boton-6"  class="tab-link close-panel" onClick="bd_listado_programacion('aeropuerto'); bd_listado_programacion('terminal');"><h4><i class="fa fa-calendar"></i> Programación Diaria</h4></a></p>
 -->
-                            <p><a href="" onClick="sincronizar();" class="tab-link close-panel"><h4><i class="fa fa-refresh"></i> Sincronización</h4></a></p>
+                            <p><a href="" onclick="sincronizar();" class="tab-link close-panel"><h4><i class="fa fa-refresh"></i> Sincronización</h4></a></p>
 <p><a href="#view-7" id="boton-9" class="tab-link close-panel" data-view=".view-main"><h4><i class="fa fa-life-ring"></i> Ayuda</h4></a></p>
                             <p><a href="#view-5" id="boton-5" class="tab-link close-panel" data-view=".view-main"><h4><i class="fa fa-info-circle"></i> Acerca de</h4></a></p>
                             <p><a href="" onclick="espacio();" class="tab-link close-panel"><h4><i class="fa fa-warning"></i> Memoria Utilizada</h4></a></p>
                             <p><a href="" onclick="salir();" class="tab-link close-panel"><h4><i class="fa fa-power-off"></i> Salir</h4></a></p>
+                            
                             
                               
 </div>
@@ -121,7 +123,7 @@
 							   <!--
 							   <button type="button" id="boton_ingresar" class="button color-green" onclick="db_ingresar();">Ingresar*</button>
 							   -->
-							   <input id="submmit-register" type="button" value="ingresar" onClick="ingreso();" class="button button-big button-fill color-green">
+							   <input id="submmit-register" type="button" value="ingresar" onclick="ingreso();" class="button button-big button-fill color-green">
 							   
 							   <a href="#formularios" id="inicio" class="oculto">Ir a formularios</a><br>
 							   
@@ -177,7 +179,7 @@
                 <thead>
                     <tr class="titulo_tabla">
                         <th></th>
-                        <th>Formulario</th>
+                        <th>Formularios Disponibles</th>
                     </tr>
                 </thead>
                 <tbody id="elementsList">
@@ -277,8 +279,9 @@
                      
                      
                      <!-- campos de fotso fuera del formulario -->
-	<div id="zona_campos_fotos">xxx</div>
-                     
+	<div id="zona_campos_fotos"></div>
+     <input type="text" id="latitud"> <input type="text" id="longitud">
+                
                      
                      
                      <!--  -->
@@ -426,7 +429,7 @@
             </table>
                    
                                   
-                    </p> 
+    </p> 
                     
                     
 </div>
@@ -508,6 +511,35 @@ Cuando hay actualizaciones disponibles de la aplicación al iniciar se da la opc
 </div>
 
 </div>
+
+
+<div id="view-8" class="view tab">
+
+<div class="navbar">
+<div class="navbar-inner">
+<div class="center sliding" id="zona_personalizada_titulo"></div>
+
+<div class="right">
+<a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+
+<div class="pages navbar-through">
+<div data-page="index-8" class="page">
+<div class="page-content">
+<div class="content-block" id="zona_personalizada_contenido">
+
+                    
+                    
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
 
 
 <!--

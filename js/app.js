@@ -425,7 +425,9 @@ $$('.sub_'+ref+'_'+it).show();
 
 	$$('#submit-encuesta').on('click', function () {
 	//myApp.alert('m');
-		
+		    /// actualizamos datos de GPS
+    getPosition();
+        //
          myApp.confirm('Desea Cerrar y Guardar esta encuesta?', 'encuesta',
          function () {
         bd_guardar_encuesta();
@@ -630,8 +632,9 @@ function bd_guardar_encuesta(){
     /// registramos 
 	if(p===80){
 var planilla=$$('#planilla').val();
+var coor=$$('#latitud').val()+'~'+$$('#longitud').val();
 localStorage.setItem('encuesta'+encuesta_id, JSON.stringify(estacion+'~'+usuario+'~'+formulario+'~'+now+'~'+planilla));
-    
+localStorage.setItem('coordenadas'+encuesta_id,coor);    
 localStorage.setItem('respuestas'+encuesta_id,JSON.stringify(respuestas)); 
  //
  var nuevo_consecutivo=Number(encuesta_id)+1;
@@ -709,7 +712,8 @@ tx_enviado='';
 		//var x=0;
 		var proceso='';
 for(var i=1;i<=limite;i++){	
-proceso=proceso+'-'+i;	
+proceso=proceso+'-'+i;
+    var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
     var en=JSON.parse(localStorage.getItem('encuesta'+i));
     var rp=JSON.parse(localStorage.getItem('respuestas'+i));
 	var consecutivo=i;
@@ -742,14 +746,16 @@ if(en!==null && en!=='') {
     if(en!==null && en!=='') {
 		enviados++;
 		
-	//myApp.alert(i+':'+en,'test A');	
-$$.post('http://metricaurbana.com/conecta.php',{sincronizar:'si',encuesta:en,respuestas:rp, consecutivo:consecutivo},function(dataS){
+	//myApp.alert(i+':'+en,'test A');
+$$.post('http://metricaurbana.com/conecta.php',{sincronizar:'si',coordenadas:coordenadas,encuesta:en,respuestas:rp, consecutivo:consecutivo},function(dataS){
 		 	var respuestaS = dataS.split("|");
 	//myApp.alert(respuestaS[0]);
 	//return;
 	
 	//outerHTMLx = outerHTMLx +respuestaS[0]+'*'; 
              if(respuestaS[0]==='OK'){
+                 
+localStorage.removeItem('coordenadas'+respuestaS[3]);
 localStorage.removeItem('encuesta'+respuestaS[3]);
 localStorage.removeItem('respuestas'+respuestaS[3]);				 
 //myApp.alert(i+' OK:'+respuestaS[3]);				 
@@ -760,6 +766,8 @@ $$('#ya_enviado').html(tx_enviado);
 				 /////******
 
              }else if(respuestaS[0]==='YA'){
+                 
+localStorage.removeItem('coordenadas'+respuestaS[3]);
 localStorage.removeItem('encuesta'+respuestaS[3]);
 localStorage.removeItem('respuestas'+respuestaS[3]);
 //myApp.alert(i+' YA:'+respuestaS[3]);				 
@@ -797,7 +805,7 @@ $$('#ya_enviado').html(tx_enviado);
 		myApp.alert('proceso realizado','sincronización',function(){
 		myApp.showTab('#view-4'); 
 		reporte_encuestas(); 	
-		});  
+		});
 		 
 	  } 
     //
@@ -1279,3 +1287,104 @@ var size = 0;
       //alert("ERROR: " + error.code)
    }
 }	
+
+//document.getElementById("getPosition").addEventListener("click", getPosition);
+//document.getElementById("watchPosition").addEventListener("click", watchPosition);
+
+
+function getPosition() {
+   var options = {
+      enableHighAccuracy: true,
+      maximumAge: 3600000
+   };
+   var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+   function onSuccess(position) {
+       /*
+      alert('Latitude: '          + position.coords.latitude          + '\n' +
+         'Longitude: '         + position.coords.longitude         + '\n' +
+         'Altitude: '          + position.coords.altitude          + '\n' +
+         'Accuracy: '          + position.coords.accuracy          + '\n' +
+         'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+         'Heading: '           + position.coords.heading           + '\n' +
+         'Speed: '             + position.coords.speed             + '\n' +
+         'Timestamp: '         + position.timestamp                + '\n');
+       */
+       $$('#latitud').val(position.coords.latitude);
+       $$('#longitud').val(position.coords.longitude);
+       
+   }
+
+   function onError(error) {
+      alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+   }
+}
+
+
+
+function cargar_contenido_personalizado(boton,titulo,contenido){
+    $$('#zona_personalizada_boton').html(boton);
+    $$('#zona_personalizada_titulo').html(titulo);
+    $$('#zona_personalizada_contenido').html(contenido);   
+    
+}
+
+
+
+function cargar_mi_contenido(){
+var usuario= JSON.parse(localStorage.getItem('usuario'));
+var cliente_id= JSON.parse(localStorage.getItem('empresa_id'));
+//
+	var conexion=checkConnection();
+	//myApp.alert(conexion+':'+usuario);
+	//if(navigator.onLine){
+	if(conexion==='Online'){
+	if(usuario!==null && usuario!==''){
+//myApp.alert(ultima_actualizacion); 	
+$$.post('http://metricaurbana.com/conecta.php',{mi_contenido:'si',usuario:usuario,cliente_id:cliente_id},function(data){
+//myApp.alert(data,'resultado mi contenido');
+	var inf = data.split("|");
+    // 
+	var para_mi = inf[0];
+    var mi_boton = inf[1];
+    var mi_titulo = inf[2];
+    var mi_contenido = inf[3];
+    
+   
+    localStorage.setItem('mi_boton',JSON.stringify(mi_boton));
+	localStorage.setItem('mi_titulo',JSON.stringify(mi_titulo));
+    localStorage.setItem('mi_contenido',JSON.stringify(mi_contenido));
+    //
+    /// cargamos el contenido
+$$('#zona_personalizada_boton').html(mi_boton);
+$$('#zona_personalizada_titulo').html(mi_titulo);
+$$('#zona_personalizada_contenido').html(mi_contenido);
+    //
+    if(para_mi==='si'){
+     myApp.alert('Contenido Disponible en "'+mi_titulo+'" ','Mi Contenido'); 
+    
+    }else if(para_mi==='no'){
+     myApp.alert('No hay contenido disponible'+cliente_id,'Mi Contenido');
+    }
+
+	
+         }); 	
+}else{
+ myApp.alert('Por favor haga click en Salir e ingrese de Nuevo con sus Claves a la Aplicación','error');   
+}	
+	//
+}else{
+myApp.alert('Por favor revise su conexión a internet','error en conexión');
+}
+/// cargamos el contenido
+$$('#zona_personalizada_boton').html(JSON.parse(localStorage.getItem('mi_boton')));
+$$('#zona_personalizada_titulo').html(JSON.parse(localStorage.getItem('mi_titulo')));
+$$('#zona_personalizada_contenido').html(JSON.parse(localStorage.getItem('mi_contenido')));
+    
+    ///
+    if(JSON.parse(localStorage.getItem('mi_titulo'))!==null && JSON.parse(localStorage.getItem('mi_titulo'))!=''){
+   myApp.showTab('#view-8');     
+    }
+//
+    ///+++++++++++++    
+}
