@@ -1,4 +1,4 @@
-/*
+cordova.define("cordova-plugin-file.isChrome", function(require, exports, module) { /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,3 +24,5 @@ module.exports = function () {
     // possibly a good flag to indicate that we're running in Chrome
     return window.webkitRequestFileSystem && window.webkitResolveLocalFileSystemURL;
 };
+
+});
