@@ -9,6 +9,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" launch-external="yes" />
+    <access origin="metricaurbana.com" subdomains="true" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />

@@ -118,7 +118,7 @@ var estacion=$$('#estacion').val();
 	//myApp.alert(conexion);
 	//if(navigator.onLine){
 	if(conexion==='Online'){
-	$$.post('http://metricaurbana.com/conecta.php',{ingreso:'si',estacion:estacion},function(data){
+	$$.post('https://metricaurbana.com/conecta.php',{ingreso:'si',estacion:estacion},function(data){
 //	
 	var respuesta = data.split("|");
 	//myApp.alert('data:'+data); 	
@@ -235,7 +235,7 @@ var mensaje='';
 	if(conexion==='Online'){
 	$$('#lista_formularios_code').val('');
 		
-$$.post('http://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion,empresa_id:empresa_id},function(data){
+$$.post('https://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion,empresa_id:empresa_id},function(data){
 //	
 	var nuevos = data.split("|");
     // 
@@ -747,7 +747,7 @@ if(en!==null && en!=='') {
 		enviados++;
 		
 	//myApp.alert(i+':'+en,'test A');
-$$.post('http://metricaurbana.com/conecta.php',{sincronizar:'si',coordenadas:coordenadas,encuesta:en,respuestas:rp, consecutivo:consecutivo},function(dataS){
+$$.post('https://metricaurbana.com/conecta.php',{sincronizar:'si',coordenadas:coordenadas,encuesta:en,respuestas:rp, consecutivo:consecutivo},function(dataS){
 		 	var respuestaS = dataS.split("|");
 	//myApp.alert(respuestaS[0]);
 	//return;
@@ -941,7 +941,7 @@ var usuario= JSON.parse(localStorage.getItem('usuario'));
 	if(conexion==='Online'){
 	if(usuario!==null && usuario!==''){
 //myApp.alert(ultima_actualizacion); 	
-$$.post('http://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:usuario},function(data){
+$$.post('https://metricaurbana.com/conecta.php',{nueva_programacion:'si',usuario:usuario},function(data){
 //myApp.alert(data,'resultado completo');
 	var prog = data.split("|");
     // 
@@ -1129,7 +1129,7 @@ var dataIm=readFile(nombre);
 //var smallImage = document.getElementById('smallImage'+pregunta);
 //var dataIm=$$('#smallImage'+pregunta).getImageData();
 //alert('datos:'+dataIm);
-$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta},function(data){
+$$.post('https://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta},function(data){
 	var rx = data.split("|");
 //myApp.alert(rx[1],rx[0]);	
 });
@@ -1242,7 +1242,7 @@ window.requestFileSystem(type, size, successCallback, errorCallback)
 				
 			
 //myApp.alert('enviando:'+name+' > '+pregunta);
-$$.post('http://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta,posicion:posicion},function(data){
+$$.post('https://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:ref, nombre:nombre,pregunta:pregunta,posicion:posicion},function(data){
 	var rx = data.split("|");
 //myApp.alert(rx[1],rx[0]);	
 	removeFile('Photo'+nombre+'.jpg');
@@ -1341,7 +1341,7 @@ var cliente_id= JSON.parse(localStorage.getItem('empresa_id'));
 	if(conexion==='Online'){
 	if(usuario!==null && usuario!==''){
 //myApp.alert(ultima_actualizacion); 	
-$$.post('http://metricaurbana.com/conecta.php',{mi_contenido:'si',usuario:usuario,cliente_id:cliente_id},function(data){
+$$.post('https://metricaurbana.com/conecta.php',{mi_contenido:'si',usuario:usuario,cliente_id:cliente_id},function(data){
 //myApp.alert(data,'resultado mi contenido');
 	var inf = data.split("|");
     // 
