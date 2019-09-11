@@ -245,12 +245,12 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-whitelist": "1.2.2",
-    "cordova-plugin-console": "1.0.7",
-    "cordova-plugin-statusbar": "1.0.1",
-    "cordova-plugin-camera": "4.0.3",
-    "cordova-plugin-geolocation": "4.0.1",
-    "cordova-plugin-file": "6.0.1",
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-console": "1.1.0",
+    "cordova-plugin-statusbar": "2.4.3",
+    "cordova-plugin-camera": "4.1.0",
+    "cordova-plugin-geolocation": "4.0.2",
+    "cordova-plugin-file": "6.0.2",
     "cordova-plugin-file-transfer": "1.7.1"
 }
 // BOTTOM OF METADATA
