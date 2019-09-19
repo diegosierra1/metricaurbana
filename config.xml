@@ -2,7 +2,7 @@
 <widget id="com.metricaurbana" version="1.2.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>metricaurbana</name>
     <description>
-        Aplicación para hacer medición, encuestas o sondeos de opinión con formularios personalizados.
+        Aplicación para hacer medición, encuestas o sondeos de opinión con formularios personalizados
     </description>
     <author email="soporte@indexdream.com" href="http://indexdream.com">
         IndexDream
@@ -17,7 +17,8 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
-        <preference name="android-minSdkVersion" value="28" />
+        <preference name="android-minSdkVersion" value="23" />
+        <preference name="android-targetSdkVersion" value="28" />
         <allow-intent href="market:*" />
     </platform>
     <icon platform="android" src="iconos/iconoMetrica36.png" density="ldpi" width="36" height="36"/>
