@@ -203,7 +203,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.2.6';
+var version_actual= '1.2.7';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
