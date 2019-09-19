@@ -677,11 +677,14 @@ function sincronizar(){
 	var conexion=checkConnection();
 	//alert(conexion);
 	if(conexion==='Online'){
+		myApp.alert('conectando con el servidor...', 'Sincronización');
 	//if(navigator.onLine){
 var limite=JSON.parse(localStorage.getItem('encuesta_id'));
+
 		limite=limite+1;
 		var limiteB=Number(limite)-250;
 		var en1=JSON.parse(localStorage.getItem('encuesta'+limiteB));
+		
 		//
 		if(limite>250 && en1!==null && en1!==''){
 		limite=limiteB;	
@@ -694,6 +697,7 @@ var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 		limite=limiteC;	
 		}
 		//
+		//alert('en2:'+en2);
 	if(limite===null){
 	limite=0;
 	myApp.alert('No hay encuestas pendientes de sincronización', 'Sin Registros');
@@ -702,22 +706,37 @@ var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 //var i=0;
 var enviados=0;	
 
-var tx_enviado=JSON.parse(localStorage.getItem('enviado'));
-if(tx_enviado===null){
-tx_enviado='';	
+
+if(JSON.parse(localStorage.getItem('enviado'))===null){
+var tx_enviado='';	
+}else{
+var tx_enviado=JSON.parse(localStorage.getItem('enviado'));	
 }
-	
+//alert(tx_enviado+'**');
+//alert('limiteee:'+limite);	
 //while(i<limite) {
    // i++;
 		//var x=0;
 		var proceso='';
 for(var i=1;i<=limite;i++){	
+ //alert(i+':::');
+ //alert(JSON.parse(localStorage.getItem('coordenadas1'))+'OO');	
 proceso=proceso+'-'+i;
-    var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
+//alert(i+'--');
+
+if(JSON.parse(localStorage.getItem('coordenadas'+i))===null){
+var coordenadas='';	
+}else{
+var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
+}
+	
+	//alert(i+'pp');
     var en=JSON.parse(localStorage.getItem('encuesta'+i));
-    var rp=JSON.parse(localStorage.getItem('respuestas'+i));
+	var rp=JSON.parse(localStorage.getItem('respuestas'+i));
+	//alert(i+'mm');
 	var consecutivo=i;
    //var respuestaS ='';
+   
 if(en!==null && en!=='') {	
 	/// se revisa para enviar las fotos si las hay
 		var f=0;
@@ -742,43 +761,43 @@ if(en!==null && en!=='') {
 }
 
 	
-	
+	//alert(en);
     if(en!==null && en!=='') {
 		enviados++;
 		
 	//myApp.alert(i+':'+en,'test A');
 $$.post('https://metricaurbana.com/conecta.php',{sincronizar:'si',coordenadas:coordenadas,encuesta:en,respuestas:rp, consecutivo:consecutivo},function(dataS){
-		 	var respuestaS = dataS.split("|");
-	//myApp.alert(respuestaS[0]);
+		 	var respuestaSS = dataS.split("|");
+	//myApp.alert(respuestaSS[0]);
 	//return;
-	
-	//outerHTMLx = outerHTMLx +respuestaS[0]+'*'; 
-             if(respuestaS[0]==='OK'){
+	//alert(respuestaSS[0]+':'+i);
+	//outerHTMLx = outerHTMLx +respuestaSS[0]+'*'; 
+             if(respuestaSS[0]==='OK'){
                  
-localStorage.removeItem('coordenadas'+respuestaS[3]);
-localStorage.removeItem('encuesta'+respuestaS[3]);
-localStorage.removeItem('respuestas'+respuestaS[3]);				 
-//myApp.alert(i+' OK:'+respuestaS[3]);				 
+localStorage.removeItem('coordenadas'+respuestaSS[3]);
+localStorage.removeItem('encuesta'+respuestaSS[3]);
+localStorage.removeItem('respuestas'+respuestaSS[3]);				 
+//myApp.alert(i+' OK:'+respuestaSS[3]);				 
 				 ////*********** /// '0YA|1Enviada|2'.$ahora.'|3'.$consecutivo.'|4'.$formulario_id.'|5'.$usuario.'|6'.$fecha_encuesta.'|7'.$fecha;
-tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaS[3] + '</b></td><td>' + respuestaS[4] + '</td><td>' + respuestaS[5] + '</td><td>' + respuestaS[6] + '</td><td>' + respuestaS[7] + '</td><td>'+respuestaS[2]+'</td></tr>'+tx_enviado;
+tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaSS[3] + '</b></td><td>' + respuestaSS[4] + '</td><td>' + respuestaSS[5] + '</td><td>' + respuestaSS[6] + '</td><td>' + respuestaSS[7] + '</td><td>'+respuestaSS[2]+'</td></tr>'+tx_enviado;
 localStorage.setItem('enviado',JSON.stringify(tx_enviado)); 
 $$('#ya_enviado').html(tx_enviado);				 
 				 /////******
 
-             }else if(respuestaS[0]==='YA'){
+             }else if(respuestaSS[0]==='YA'){
                  
-localStorage.removeItem('coordenadas'+respuestaS[3]);
-localStorage.removeItem('encuesta'+respuestaS[3]);
-localStorage.removeItem('respuestas'+respuestaS[3]);
-//myApp.alert(i+' YA:'+respuestaS[3]);				 
+localStorage.removeItem('coordenadas'+respuestaSS[3]);
+localStorage.removeItem('encuesta'+respuestaSS[3]);
+localStorage.removeItem('respuestas'+respuestaSS[3]);
+//myApp.alert(i+' YA:'+respuestaSS[3]);				 
 				 ////***********
-tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaS[3] + '</b></td><td>' + respuestaS[4] + '</td><td>' + respuestaS[5] + '</td><td>' + respuestaS[6] + '</td><td>' + respuestaS[7] + '</td><td>'+respuestaS[2]+'</td></tr>'+tx_enviado;
+tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaSS[3] + '</b></td><td>' + respuestaSS[4] + '</td><td>' + respuestaSS[5] + '</td><td>' + respuestaSS[6] + '</td><td>' + respuestaSS[7] + '</td><td>'+respuestaSS[2]+'</td></tr>'+tx_enviado;
 localStorage.setItem('enviado',JSON.stringify(tx_enviado)); 
 $$('#ya_enviado').html(tx_enviado);				 
 				 /////******
 
              }
-    //myApp.alert(respuestaS[1],'sincronizacion');
+    //myApp.alert(respuestaSS[1],'sincronizacion');
     //reporte_encuestas(); 
          });
         ///
