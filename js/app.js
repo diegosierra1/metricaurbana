@@ -203,7 +203,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.2.7';
+var version_actual= '1.2.8';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
@@ -473,7 +473,7 @@ var fechax=fc.getFullYear() + "-" + (fc.getMonth()+1)+ "-" + fc.getDate();
 var horax=fc.getHours();
 var minutosx=fc.getMinutes();  
 		
-outerHTML = outerHTML+'<tr valign="top"><td><b>' + i + '</b></td><td>' + datos[2] + '</td><td>' + datos[1] + '</td><td>' + datos[3] + '</td><td>' + fechax + ' '+horax+':'+minutosx+'</td><td>pendiente</td></tr>';
+outerHTML = outerHTML+'<tr valign="top" id="en_pen'+i+'"><td><b>' + i + '</b></td><td>' + datos[2] + '</td><td>' + datos[1] + '</td><td>' + datos[3] + '</td><td>' + fechax + ' '+horax+':'+minutosx+'</td><td>pendiente</td></tr>';
 		//
                     }
 	
@@ -634,7 +634,7 @@ function bd_guardar_encuesta(){
 var planilla=$$('#planilla').val();
 var coor=$$('#latitud').val()+'~'+$$('#longitud').val();
 localStorage.setItem('encuesta'+encuesta_id, JSON.stringify(estacion+'~'+usuario+'~'+formulario+'~'+now+'~'+planilla));
-localStorage.setItem('coordenadas'+encuesta_id,coor);    
+localStorage.setItem('coordenadas'+encuesta_id,JSON.stringify(coor));    
 localStorage.setItem('respuestas'+encuesta_id,JSON.stringify(respuestas)); 
  //
  var nuevo_consecutivo=Number(encuesta_id)+1;
@@ -677,14 +677,14 @@ function sincronizar(){
 	var conexion=checkConnection();
 	//alert(conexion);
 	if(conexion==='Online'){
-		myApp.alert('conectando con el servidor...', 'Sincronización');
+		myApp.alert('iniciando proceso...', 'Sincronización');
 	//if(navigator.onLine){
 var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 
 		limite=limite+1;
 		var limiteB=Number(limite)-250;
 		var en1=JSON.parse(localStorage.getItem('encuesta'+limiteB));
-		
+		//alert('pp:'+en1);
 		//
 		if(limite>250 && en1!==null && en1!==''){
 		limite=limiteB;	
@@ -698,6 +698,7 @@ var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 		}
 		//
 		//alert('en2:'+en2);
+		
 	if(limite===null){
 	limite=0;
 	myApp.alert('No hay encuestas pendientes de sincronización', 'Sin Registros');
@@ -705,7 +706,7 @@ var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 //var outerHTMLx = '';
 //var i=0;
 var enviados=0;	
-
+var recibidos=0;
 
 if(JSON.parse(localStorage.getItem('enviado'))===null){
 var tx_enviado='';	
@@ -718,35 +719,37 @@ var tx_enviado=JSON.parse(localStorage.getItem('enviado'));
    // i++;
 		//var x=0;
 		var proceso='';
-for(var i=1;i<=limite;i++){	
+		//alert('limite*:'+limite);
+//for(var i=1;i<=limite;i++){	
+var i=0;
+while(i<limite){
+i++	
  //alert(i+':::');
- //alert(JSON.parse(localStorage.getItem('coordenadas1'))+'OO');	
+ //alert(JSON.parse(localStorage.getItem('coordenadas'+i))+'yy');	
 proceso=proceso+'-'+i;
 //alert(i+'--');
+//var coordenadas='';	
+//alert(typeof JSON.parse(localStorage.getItem('coordenadas'+i))+'--'+JSON.parse(localStorage.getItem('coordenadas'+i)));
 
-if(JSON.parse(localStorage.getItem('coordenadas'+i))===null){
-var coordenadas='';	
-}else{
-var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
-}
+
 	
 	//alert(i+'pp');
     var en=JSON.parse(localStorage.getItem('encuesta'+i));
 	var rp=JSON.parse(localStorage.getItem('respuestas'+i));
-	//alert(i+'mm');
+	//alert(i+'mm'+en);
 	var consecutivo=i;
    //var respuestaS ='';
-   
+   //alert(i+'en:'+en);   
 if(en!==null && en!=='') {	
 	/// se revisa para enviar las fotos si las hay
 		var f=0;
 		while(f<80){
 			f++;
 		sf=0;	
-		while(sf<5){
+		while(sf<1){/// 5 no 1
 			sf++;
 			var ft=JSON.parse(localStorage.getItem('Foto'+i+'_'+f+'_'+sf));
-			if(ft!==null && ft!==''){
+			if(ft!=='undefined' && ft!==null && ft!==''){
 				var rft = ft.split("|");
 			//enviar_photo(ft);
 				//alert(rft[1]);
@@ -761,8 +764,20 @@ if(en!==null && en!=='') {
 }
 
 	
-	//alert(en);
+	//alert(i+'ennn:'+en); 
+	//alert(JSON.parse(localStorage.getItem('coordenadas'+i)));
     if(en!==null && en!=='') {
+var coordenadas='';	
+/*
+/// activar para registrar coordenadas
+if(JSON.parse(localStorage.getItem('coordenadas'+i))!==null && JSON.parse(localStorage.getItem('coordenadas'+i))!==''){
+var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
+}
+//alert('coor:'+coordenadas);
+*/
+
+
+		//if(en==='prueba'){
 		enviados++;
 		
 	//myApp.alert(i+':'+en,'test A');
@@ -770,7 +785,10 @@ $$.post('https://metricaurbana.com/conecta.php',{sincronizar:'si',coordenadas:co
 		 	var respuestaSS = dataS.split("|");
 	//myApp.alert(respuestaSS[0]);
 	//return;
-	//alert(respuestaSS[0]+':'+i);
+	if(respuestaSS[0]!=''){
+		recibidos++;
+	}
+	//alert(respuestaSS[0]+':'+respuestaSS[1]);
 	//outerHTMLx = outerHTMLx +respuestaSS[0]+'*'; 
              if(respuestaSS[0]==='OK'){
                  
@@ -783,7 +801,7 @@ tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaSS[3] + '</b></
 localStorage.setItem('enviado',JSON.stringify(tx_enviado)); 
 $$('#ya_enviado').html(tx_enviado);				 
 				 /////******
-
+$$('#en_pen'+respuestaSS[3]).hide();
              }else if(respuestaSS[0]==='YA'){
                  
 localStorage.removeItem('coordenadas'+respuestaSS[3]);
@@ -794,7 +812,8 @@ localStorage.removeItem('respuestas'+respuestaSS[3]);
 tx_enviado='<tr valign="top" class="enviado"><td><b>' + respuestaSS[3] + '</b></td><td>' + respuestaSS[4] + '</td><td>' + respuestaSS[5] + '</td><td>' + respuestaSS[6] + '</td><td>' + respuestaSS[7] + '</td><td>'+respuestaSS[2]+'</td></tr>'+tx_enviado;
 localStorage.setItem('enviado',JSON.stringify(tx_enviado)); 
 $$('#ya_enviado').html(tx_enviado);				 
-				 /////******
+				 /////ocultamos la linea que ya se ha sincronizado
+				 $$('#en_pen'+respuestaSS[3]).hide();
 
              }
     //myApp.alert(respuestaSS[1],'sincronizacion');
@@ -812,7 +831,9 @@ $$('#ya_enviado').html(tx_enviado);
 	}
 	*/
 	
-      if(i===limite){
+      //if(i===limite){
+		 // alert(recibidos+'=='+enviados+' && '+i+'==='+limite);
+		  if(recibidos==enviados && i===limite){
 		  /*
 		myApp.alert(i+' encuestas analizadas','sincronizacion');
 	reporte_encuestas(); 
@@ -821,7 +842,7 @@ $$('#ya_enviado').html(tx_enviado);
 		  */
 		$$('#elementsList_encuestas').html('');
 		  
-		myApp.alert('proceso realizado','sincronización',function(){
+		myApp.alert('se revisaron '+enviados+' encuestas','Fin sincronización',function(){
 		myApp.showTab('#view-4'); 
 		reporte_encuestas(); 	
 		});
@@ -1203,11 +1224,11 @@ var size = 0;
 
          fileEntry.createWriter(function(fileWriter) {
             fileWriter.onwriteend = function(e) {
-              //alert('Write completed: Photo'+encuesta+'-'+nombre+'.jpg');
+            //alert('Write completed: Photo'+encuesta+'-'+nombre+'.jpg');
             };
 
             fileWriter.onerror = function(e) {
-              // alert('Write failed: ' + e.toString());
+            alert('Error al Guardar Foto: ' + e.toString());
             };
 
 			 //alert('Escribiendo: '+pregunta+'_'+posicion);
@@ -1224,7 +1245,7 @@ var size = 0;
    }
 
    function errorCallback(error) {
-      //alert("ERROR: " + error.code)
+     alert("ERROR Guardando: " + error.code)
    }
 		//
 
@@ -1236,14 +1257,18 @@ function readFile(nombre,ref,pregunta,posicion) {
 
    //var type = window.TEMPORARY;
 var type = window.PERSISTENT;
+//var type = LocalFileSystem.PERSISTENT;
    //var size = 5*1024*1024;
 var size = 0;
+var nomSS=nombre.split("-");
 //alert('Leyendo: Photo'+nombre+'.jpg /R:'+ref+'/P:'+pregunta+'/Po:'+posicion);
+//alert('Leyendo: '+nomSS[1]+'.jpg /R:'+ref+'/P:'+pregunta+'/Po:'+posicion);
 	
 window.requestFileSystem(type, size, successCallback, errorCallback)
 
    function successCallback(fs) {
       fs.root.getFile('Photo'+nombre+'.jpg', {}, function(fileEntry) {
+		//fs.root.getFile(nomSS[1]+'.jpg', {}, function(fileEntry) {  
 
          fileEntry.file(function(file) {
             var reader = new FileReader();
@@ -1252,12 +1277,11 @@ window.requestFileSystem(type, size, successCallback, errorCallback)
                //**var txtArea = document.getElementById('textarea');
                //**txtArea.value = this.result;
 				
-				
 				//****
-					var dataIm=this.result;		
+var dataIm=this.result;		
 //var smallImage = document.getElementById('smallImage'+pregunta);
 //var dataIm=$$('#smallImage'+pregunta).getImageData();
-//alert(pregunta+'_'+posicion+' datos:'+dataIm);
+//alert('Photo'+nombre+'.jpg > datos:'+dataIm);
 				
 			
 //myApp.alert('enviando:'+name+' > '+pregunta);
@@ -1279,7 +1303,8 @@ $$.post('https://metricaurbana.com/conecta.php',{foto:'si',imagen:dataIm, ref:re
    }
 
    function errorCallback(error) {
-      //alert("ERROR: " + error.code)
+	  //alert("ERROR: " + error.code);
+	  /// no existe el archivo porque ya se envio al servidor
    }
 		//
 	
