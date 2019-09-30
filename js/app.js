@@ -746,7 +746,7 @@ if(en!==null && en!=='') {
 		while(f<80){
 			f++;
 		sf=0;	
-		while(sf<1){/// 5 no 1
+		while(sf<2){/// 5 no 1
 			sf++;
 			var ft=JSON.parse(localStorage.getItem('Foto'+i+'_'+f+'_'+sf));
 			if(ft!=='undefined' && ft!==null && ft!==''){
