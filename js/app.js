@@ -126,7 +126,8 @@ var estacion=$$('#estacion').val();
   localStorage.setItem('usuario',JSON.stringify(usuario));
     localStorage.setItem('estacion_id',JSON.stringify(estacion));
 	localStorage.setItem('empresa',JSON.stringify(respuesta[1]));
-	localStorage.setItem('empresa_id',JSON.stringify(respuesta[2]));	
+	localStorage.setItem('empresa_id',JSON.stringify(respuesta[2]));
+	localStorage.setItem('firmas_empresa_id',JSON.stringify(respuesta[3]));	
 	
 	localStorage.setItem('sesion',JSON.stringify('on'));
 		//
@@ -203,7 +204,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.2.8';
+var version_actual= '1.3.1';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
@@ -425,7 +426,7 @@ $$('.sub_'+ref+'_'+it).show();
 
 	$$('#submit-encuesta').on('click', function () {
 	//myApp.alert('m');
-		    /// actualizamos datos de GPS
+	/// actualizamos datos de GPS
     getPosition();
         //
          myApp.confirm('Desea Cerrar y Guardar esta encuesta?', 'encuesta',
@@ -554,7 +555,13 @@ function bd_guardar_encuesta(){
 			  //
 			  document.getElementById('p'+formulario+'_'+p).scrollIntoView();
               return;
-          }else{
+          }else if(valor==='Sin Firma'){
+			  // si es firma siempre son obligatorias
+			myApp.alert('falta completar las firmas en la sección '+p,'error');
+			//
+			document.getElementById('p'+formulario+'_'+p).scrollIntoView();
+			return;
+		}else{
 		
 			  if(valor==='foto'){
 				  /// se guarda la foto como archivo para no llenar la memoria del storage
@@ -677,7 +684,7 @@ function sincronizar(){
 	var conexion=checkConnection();
 	//alert(conexion);
 	if(conexion==='Online'){
-		myApp.alert('iniciando proceso...', 'Sincronización');
+		myApp.alert('procesando...', 'Sincronización');
 	//if(navigator.onLine){
 var limite=JSON.parse(localStorage.getItem('encuesta_id'));
 
@@ -768,13 +775,13 @@ if(en!==null && en!=='') {
 	//alert(JSON.parse(localStorage.getItem('coordenadas'+i)));
     if(en!==null && en!=='') {
 var coordenadas='';	
-/*
+
 /// activar para registrar coordenadas
 if(JSON.parse(localStorage.getItem('coordenadas'+i))!==null && JSON.parse(localStorage.getItem('coordenadas'+i))!==''){
 var coordenadas=JSON.parse(localStorage.getItem('coordenadas'+i));
 }
 //alert('coor:'+coordenadas);
-*/
+/**/
 
 
 		//if(en==='prueba'){
@@ -832,7 +839,7 @@ $$('#ya_enviado').html(tx_enviado);
 	*/
 	
       //if(i===limite){
-		 // alert(recibidos+'=='+enviados+' && '+i+'==='+limite);
+		// alert(recibidos+'=='+enviados+' && '+i+'==='+limite);
 		  if(recibidos==enviados && i===limite){
 		  /*
 		myApp.alert(i+' encuestas analizadas','sincronizacion');
@@ -853,7 +860,7 @@ $$('#ya_enviado').html(tx_enviado);
 }
 //myApp.alert(proceso);	
 		
-		
+myApp.alert('terminado', 'Sincronización');		
 
 	}else{
 		myApp.alert('Por favor revise su conexión a internet','error en conexión');
@@ -1432,3 +1439,40 @@ $$('#zona_personalizada_contenido').html(JSON.parse(localStorage.getItem('mi_con
 //
     ///+++++++++++++    
 }
+
+
+
+function verificar_firma(posicion){
+	$$('#mensaje_'+posicion).html('');
+	var us=$$('#usuario_'+posicion).val();
+	var cl=$$('#clave_'+posicion).val();
+	us=us.trim();
+	cl=cl.trim();
+	var fff=JSON.parse(localStorage.getItem('firmas_empresa_id'));
+	//alert(fff);
+	
+	
+	/// recorremos el array
+	//alert(posicion);jkfjhjh
+	var fx='Sin Firma';
+var firmas = fff.split('+');
+//alert(ff);
+
+	$$.each( firmas, function( i, val ) {
+	 //alert( "firma "+i+': ' + val );
+	 /// separamos
+	var ff = val.split('~'); 
+	var usff=ff[3];
+	var clff=ff[4];
+	//alert(ff);
+	
+	if(usff==us && clff==cl){
+	fx=ff[0]+' <br>'+ff[1]+' - documento: '+ff[2];
+	//alert(fx);
+	}
+	
+	});
+	/**/
+	$$('#'+posicion).val(fx);
+	$$('#mensaje_'+posicion).html(fx);
+	}

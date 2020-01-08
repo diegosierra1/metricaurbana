@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.metricaurbana" version="1.2.8.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>metricaurbana</name>
+<widget id="com.metricaurbana" version="1.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Métrica Urbana</name>
     <description>
         Aplicación para hacer medición, encuestas o sondeos de opinión con formularios personalizados
     </description>

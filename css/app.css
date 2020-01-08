@@ -41,15 +41,24 @@ body{font-family:'Arial'; font-size: 18px;}
 
 .linea_pregunta{background-color: #ccc; font-size: 20px; font-weight: bold; margin-bottom: 5px; margin-top: 5px; }
 .numero_pregunta{background-color: #f00; color: #fff; padding-left: 8px; padding-right: 8px;}
-#pagina_encuesta input[type=text]{background: #ccc; border: solid 1px #000; margin-bottom: 8px; width: 80%;}
+#pagina_encuesta input[type=text], #pagina_encuesta input[type=password]{background: #ccc; border: solid 1px #000; margin-bottom: 8px; width: 80%;}
 #pagina_encuesta input[type=radio]{height: 20px;}
 .subpreguntas{display: none}
 .presentacion, .gracias{background-color:cornsilk; font-size: 18px; padding: 8px;}
 .seccion{background-color: orange; font-size: 18px; text-align: center; font-weight: bold; color: #fff;}
 .oculto{display: none}
 
-
-
+input[type="button"]{
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding:3px 12px;
+    background: darkgreen;
+    color: white; border:solid 1px black;
+}
+input[type="button"]:hover{
+  background: #333;  
+}
 
 input[type="checkbox"]  {
 	/*
@@ -81,7 +90,7 @@ input[type="radio"]  {
 
 .linea_respuesta{margin-bottom: 5px;}
 
-input[type="text"], input[type="number"], select {
+input[type="text"], input[type="number"],input[type="password"],select {
     width: 95%; /*max-width: 400px;*/ height: 30px; 
     background: #fff;
 	border: solid 2px #999; font-size: 20px;
