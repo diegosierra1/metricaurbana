@@ -20,7 +20,7 @@
         <preference name="android-minSdkVersion" value="23" />
         <preference name="android-targetSdkVersion" value="28" />
         <preference name="android-compileSdkVersion" value="28" />
-        <preference name="android-versionCode" value="10210" />
+        <preference name="android-versionCode" value="10211" />
         <allow-intent href="market:*" />
     </platform>
     <icon platform="android" src="iconos/iconoMetrica36.png" density="ldpi" width="36" height="36"/>
