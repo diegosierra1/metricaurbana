@@ -204,7 +204,7 @@ while(i<1000) {
 function cargar_listado_formularios(){
 	//
 	
-var version_actual= '1.3.1';
+var version_actual= '1.3.2';
 var usuario= JSON.parse(localStorage.getItem('usuario'));
 var empresa_id= JSON.parse(localStorage.getItem('empresa_id'));	
 	//myApp.alert(empresa_id);
@@ -235,7 +235,7 @@ var mensaje='';
 	//if(navigator.onLine){
 	if(conexion==='Online'){
 	$$('#lista_formularios_code').val('');
-		
+	var formularios_descargados='';
 $$.post('https://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_actualizacion:ultima_actualizacion,empresa_id:empresa_id},function(data){
 //	
 	var nuevos = data.split("|");
@@ -277,8 +277,9 @@ $$.post('https://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_
 			//bd_listado_formularios();
 			$$("#elementsList").html(listado);
 			localStorage.setItem('listado_formularios',JSON.stringify(listado));
-			myApp.alert(formx_nombre,'formulario descargado N.'+formx_numero);	
-			
+
+			//myApp.alert(formx_nombre,'formulario descargado N.'+formx_numero);	
+			formularios_descargados=formularios_descargados+'<strong>N.'+formx_numero+':</strong> '+formx_nombre+'<br>';
         }else{
 		//localStorage.removeItem('formulario'+fx);	
 		}
@@ -286,9 +287,12 @@ $$.post('https://metricaurbana.com/conecta.php',{nuevos_formularios:'si',ultima_
 	}
 	//
 	}
-	
+	if(formularios_descargados!==''){
+		myApp.alert(formularios_descargados,'formularios descargados');   
+	   }
          });
-       //////
+	   //////
+	   
 	}else{
 		/// no hay internet se carga el ultimo listado guardado
 		var lt=JSON.parse(localStorage.getItem('listado_formularios'));
@@ -1475,4 +1479,9 @@ var firmas = fff.split('+');
 	/**/
 	$$('#'+posicion).val(fx);
 	$$('#mensaje_'+posicion).html(fx);
+	if(fx=='Sin Firma'){
+		myApp.alert('Usuario o Clave incorrecto','error en firma'); 
+	}else{
+		myApp.alert('Se ha validado la firma','firma'); 
+	}
 	}
